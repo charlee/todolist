@@ -1,8 +1,9 @@
 import _ from 'lodash';
-import { getType } from "typesafe-actions";
+import { getType } from 'typesafe-actions';
 import { combineReducers } from 'redux';
-import { Todo } from "Models";
-import { listTodo } from "../actions/todo";
+import { Todo } from 'Models';
+import { listTodo } from '../actions/todo';
+import { RootAction } from 'StoreTypes';
 
 export type TodoState = Readonly<{
   byId: Readonly<{ [key: number]: Todo }>;
@@ -34,7 +35,10 @@ const allIds = (state: TodoState['allIds'] = initialState.allIds, action: RootAc
   }
 };
 
-const loading = (state: TodoState['loading'] = initialState.loading, action: RootAction) => {
+const loading = (
+  state: TodoState['loading'] = initialState.loading,
+  action: RootAction,
+) => {
   switch (action.type) {
     case getType(listTodo.request):
       return true;

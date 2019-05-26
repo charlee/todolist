@@ -1,24 +1,22 @@
 import React from 'react';
-import logo from '../assets/logo.svg';
 import './App.css';
+import TodoList from './TodoList';
+import { Theme, makeStyles, Typography } from '@material-ui/core';
+
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    width: 960,
+    margin: '100px auto 0 auto',
+    textAlign: 'center',
+  },
+}));
 
 const App: React.FC = () => {
+  const classes = useStyles();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={classes.root}>
+      <Typography variant="h3">Todo List</Typography>
+      <TodoList />
     </div>
   );
 };

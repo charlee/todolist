@@ -1,21 +1,47 @@
-import React from 'react';
-import {
-  Theme,
-  createStyles,
-  WithStyles,
-  withStyles,
-} from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Theme, makeStyles, List } from '@material-ui/core';
+import { RootState } from 'StoreTypes';
+import { selectTodoList } from '../store/selectors/todo';
+import { Dispatch } from 'redux';
+import { listTodo } from '../store/actions/todo';
+import TodoItem from './TodoItem';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    root: {},
-  });
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    margin: '40px auto 0 auto',
+    width: 480,
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
 
-export interface IProps extends WithStyles<typeof styles> {}
+const mapStateToProps = (state: RootState) => ({
+  todos: selectTodoList(state),
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  listTodo: () => dispatch(listTodo.request()),
+});
+
+export interface IProps
+  extends ReturnType<typeof mapStateToProps>,
+    ReturnType<typeof mapDispatchToProps> {}
 
 const TodoList = (props: IProps) => {
-  const { classes } = props;
-  return <div className={classes.root}/>;
-}
+  const classes = useStyles();
+  const { todos, listTodo } = props;
 
-export default withStyles(styles)(TodoList);
+  useEffect(() => {
+    listTodo();
+  }, []);
+
+  return (
+    <List className={classes.root}>
+      {todos.map(todo => (
+        <TodoItem key={todo.id} todo={todo} />
+      ))}
+    </List>
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

@@ -7,6 +7,6 @@ import { RootEpic } from 'StoreTypes';
 export const ListTodoEpic: RootEpic = (actions$, state$, { todos }) =>
   actions$.pipe(
     filter(isOfType(getType(listTodo.request))),
-    mergeMap(action => todos.listTodos$().pipe(map(listTodo.success))),
+    mergeMap(action => todos.listTodo$().pipe(map(listTodo.success))),
     catchError(err => of(listTodo.failure(err))),
   );
